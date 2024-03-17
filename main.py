@@ -54,7 +54,15 @@ def registrar_usuario():
         return jsonify({"mensaje": "Usuario registrado exitosamente", "user-id": nuevo_usuario_id}), 200
     else:
         return jsonify({"mensaje": "El nombre de usuario ya existe"}), 400
-    
+
+@app.route('/verificar_usuario_nuevo/<nombre_usuario>', methods=['GET'])
+def verificar_usuario_nuevo(nombre_usuario):
+    if nombre_usuario in tabla_user['nombre'].values:
+        es_nuevo = tabla_user.loc[tabla_user['nombre'] == nombre_usuario, 'es_nuevo'].values[0]
+        return str(es_nuevo), 200
+    else:
+        return "False", 404
+
 @app.route('/guardar_calificacion', methods=['POST'])
 def guardar_calificacion():
     datos = request.json
